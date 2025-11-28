@@ -1,7 +1,10 @@
 # PKI Infrastructure & Secure Web Server Implementation
 **Name:** Aniket Anil Naik
+
 **SJSU ID:** 019107114
+
 **Course:** SJSU CMPE 272 - Enterprise Software Platforms
+
 **Assignment:** HW 7 - Security
 
 ## 📖 Project Overview
