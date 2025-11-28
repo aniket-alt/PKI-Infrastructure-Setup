@@ -1,54 +1,21 @@
-\# PKI Infrastructure Setup
+# PKI Infrastructure & Secure Web Server Implementation
+**Course:** SJSU CMPE 272 - Enterprise Software Platforms
+**Assignment:** HW 7 - Security
 
-SJSU CMPE 272 - HW 7
+## 📖 Project Overview
+This repository contains the configuration and command history for building a 3-tier Public Key Infrastructure (PKI) from scratch. The goal was to establish a Chain of Trust and secure a local Apache Tomcat web server with a custom-signed TLS certificate.
 
+### 🏗️ Infrastructure Hierarchy
+1.  **Root CA (The Trust Anchor):** Self-signed certificate (`MyRootCA`).
+2.  **Signing CA (Intermediate):** Signed by the Root CA (`MySigningCA`).
+3.  **End-Entity (Localhost):** Web server certificate signed by the Signing CA.
 
+---
 
-\## Project Overview
-
-Designed and built a 3-tier PKI infrastructure including:
-
-1\. Root CA (Self-Signed)
-
-2\. Signing CA (Intermediate)
-
-3\. End-Entity Certificate (Localhost)
-
-
-
-\## Commands Used
-
-
-
-\### 1. Root CA Setup
-
-openssl genrsa -aes256 -out rootCA/rootCA.key 4096
-
-openssl req -x509 -new -nodes -key rootCA/rootCA.key -sha256 -days 3650 -out rootCA/rootCA.pem
-
-
-
-\### 2. Signing CA Setup
-
-openssl genrsa -out signingCA/signingCA.key 4096
-
-openssl req -new -key signingCA/signingCA.key -out signingCA/signingCA.csr
-
-openssl x509 -req -in signingCA/signingCA.csr -CA rootCA/rootCA.pem -CAkey rootCA/rootCA.key -CAcreateserial -out signingCA/signingCA.crt -days 500 -sha256
-
-
-
-\### 3. Server Certificate \& Tomcat
-
-openssl genrsa -out server/server.key 2048
-
-openssl req -new -key server/server.key -out server/server.csr
-
-openssl x509 -req -in server/server.csr -CA signingCA/signingCA.crt -CAkey signingCA/signingCA.key -CAcreateserial -out server/server.crt -days 365 -sha256
-
-
-
-\### 4. Keystore Generation
-
-openssl pkcs12 -export -in server/server.crt -inkey server/server.key -certfile signingCA/signingCA.crt -out server/keystore.p12 -name tomcat
-
+## 📂 Directory Structure
+```text
+.
+├── rootCA/          # Contains the Root CA private key and certificate
+├── signingCA/       # Contains the Intermediate CA key, CSR, and certificate
+├── server/          # Contains the Server key, CSR, certificate, and PKCS12 keystore
+└── README.md        # Project documentation
